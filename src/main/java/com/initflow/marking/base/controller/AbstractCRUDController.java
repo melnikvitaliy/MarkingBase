@@ -107,7 +107,7 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
         return true;
     }
 
-    public boolean getSearchPerm(SR id, HttpServletRequest request, Map<String, String> header){
+    public boolean getSearchPerm(SR searchRequest, HttpServletRequest request, Map<String, String> header){
         return true;
     }
 
