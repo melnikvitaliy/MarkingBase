@@ -40,7 +40,7 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 //        return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getReadPerm(#id, #request, #header)")
+    @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getSearchPerm(#searchRequest, #request, #header)")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ApiOperation(value = "read_list search", notes = "read_list search")
     public @ResponseBody
@@ -104,6 +104,10 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
     public abstract String[] getCreateRoles();
 
     public boolean getReadPerm(ID id, HttpServletRequest request, Map<String, String> header){
+        return true;
+    }
+
+    public boolean getSearchPerm(SR id, HttpServletRequest request, Map<String, String> header){
         return true;
     }
 
