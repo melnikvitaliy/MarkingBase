@@ -9,25 +9,28 @@ import java.util.List;
  */
 public class ErrorVM implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     private final String message;
     private final String description;
+    private final String exMessage;
 
     private List<FieldErrorVM> fieldErrors;
 
-    public ErrorVM(String message) {
-        this(message, null);
-    }
+//    public ErrorVM(String message, String exMessage) {
+//        this(message, null, exMessage);
+//    }
 
-    public ErrorVM(String message, String description) {
+    public ErrorVM(String message, String description, String exMessage) {
         this.message = message;
         this.description = description;
+        this.exMessage = exMessage;
     }
 
-    public ErrorVM(String message, String description, List<FieldErrorVM> fieldErrors) {
+    public ErrorVM(String message, String description, String exMessage, List<FieldErrorVM> fieldErrors) {
         this.message = message;
         this.description = description;
+        this.exMessage = exMessage;
         this.fieldErrors = fieldErrors;
     }
 
@@ -48,5 +51,9 @@ public class ErrorVM implements Serializable {
 
     public List<FieldErrorVM> getFieldErrors() {
         return fieldErrors;
+    }
+
+    public String getExMessage(){
+        return exMessage;
     }
 }

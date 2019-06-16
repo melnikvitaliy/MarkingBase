@@ -24,28 +24,28 @@ public class ExceptionTranslator {
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorVM processMethodNotSupportedException(ForbiddenMetricsBaseRuntimeException exception) {
-        return new ErrorVM(HttpStatus.FORBIDDEN.toString(), exception.getMessage());
+        return new ErrorVM(HttpStatus.FORBIDDEN.toString(), null, exception.getMessage());
     }
 
     @ExceptionHandler(UnprocessableMetricsBaseRuntimeException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorVM processMethodNotSupportedException(UnprocessableMetricsBaseRuntimeException exception) {
-        return new ErrorVM(HttpStatus.UNPROCESSABLE_ENTITY.toString(), exception.getMessage());
+        return new ErrorVM(HttpStatus.UNPROCESSABLE_ENTITY.toString(), null, exception.getMessage());
     }
 
     @ExceptionHandler(NotFoundMetricsBaseException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorVM processMethodNotSupportedException(NotFoundMetricsBaseException exception) {
-        return new ErrorVM(HttpStatus.NOT_FOUND.toString(), exception.getMessage());
+        return new ErrorVM(HttpStatus.NOT_FOUND.toString(), null, exception.getMessage());
     }
 
     @ExceptionHandler(NotAllowedMetricsBaseRuntimeException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ErrorVM processMethodNotSupportedException(NotAllowedMetricsBaseRuntimeException exception) {
-        return new ErrorVM(HttpStatus.METHOD_NOT_ALLOWED.toString(), exception.getMessage());
+        return new ErrorVM(HttpStatus.METHOD_NOT_ALLOWED.toString(), null, exception.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
@@ -55,10 +55,10 @@ public class ExceptionTranslator {
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
         if (responseStatus != null) {
             builder = ResponseEntity.status(responseStatus.value());
-            errorVM = new ErrorVM("error." + responseStatus.value().value(), responseStatus.reason());
+            errorVM = new ErrorVM("error." + responseStatus.value().value(), responseStatus.reason(), ex.getMessage());
         } else {
             builder = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
-            errorVM = new ErrorVM("error.internalServerError", "Internal server error");
+            errorVM = new ErrorVM("error.internalServerError", "Internal server error",  ex.getMessage());
         }
         return builder.body(errorVM);
     }
