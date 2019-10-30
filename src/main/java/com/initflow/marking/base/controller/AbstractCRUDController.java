@@ -32,7 +32,7 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 
     @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getReadPerm(#id, #request, #header)")
     @RequestMapping(method = RequestMethod.GET)
-    @ApiOperation(value = "Получение списка сущностей.", notes = "Получение списка сущностей/Get documents")
+    @ApiOperation(value = "Получение списка сущностей/Get documents", notes = "Получение списка сущностей/Get documents")
     public @ResponseBody
     Page<R_DTO> readList(@RequestParam(value = "ids", required = false) List<ID> ids, Pageable pageable, HttpServletRequest request, @RequestHeader Map<String, String> header) {
         return crudService.readList(ids, pageable, getReadMapper());
@@ -42,7 +42,7 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 
     @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getSearchPerm(#searchRequest, #request, #header)")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    @ApiOperation(value = "Поиск сущности.", notes = "Поиск сущности/Find documents")
+    @ApiOperation(value = "Поиск сущности/Find documents", notes = "Поиск сущности/Find documents")
     public @ResponseBody
     Page<R_DTO> readList(Pageable pageable, SR searchRequest,
                          HttpServletRequest request, @RequestHeader Map<String, String> header) {
@@ -53,7 +53,7 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 
     @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getReadPerm(#id, #request, #header)")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ApiOperation(value = "Получить сущность по id.", notes = "Получить сущность по id/Read document")
+    @ApiOperation(value = "Получить сущность по id/Read document", notes = "Получить сущность по id/Read document")
     public @ResponseBody
     ResponseEntity<R_DTO> read(@PathVariable ID id,
                                HttpServletRequest request, @RequestHeader Map<String, String> header) {
@@ -63,7 +63,7 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 
     @PreAuthorize("hasAnyAuthority(#root.this.updateRoles) and #root.this.getUpdatePerm(#id, #dto, #request, #header)")
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
-    @ApiOperation(value = "Обновление сущности.", notes = "Обновление сущности/Update document")
+    @ApiOperation(value = "Обновление сущности/Update document", notes = "Обновление сущности/Update document")
     public @ResponseBody
     ResponseEntity<R_DTO> update(@PathVariable ID id, @RequestBody U_DTO dto,
                                  HttpServletRequest request, @RequestHeader Map<String, String> header) {
@@ -75,7 +75,7 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 
     @PreAuthorize("hasAnyAuthority(#root.this.createRoles) and #root.this.getCreatePerm(#dto, #request, #header)")
     @RequestMapping(method = RequestMethod.POST)
-    @ApiOperation(value = "Создание сущости.", notes = "Создание сущости/Create document")
+    @ApiOperation(value = "Создание сущости/Create document", notes = "Создание сущости/Create document")
     public @ResponseBody
     ResponseEntity<R_DTO> create(@RequestBody C_DTO dto,
                                  HttpServletRequest request, @RequestHeader Map<String, String> header) {
