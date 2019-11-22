@@ -3,6 +3,8 @@ package com.initflow.marking.base.controller;
 import com.initflow.marking.base.mapper.domain.CrudMapper;
 import com.initflow.marking.base.models.SearchRequest;
 import com.initflow.marking.base.models.domain.IDObj;
+import com.initflow.marking.base.permission.CheckDataPermission;
+import com.initflow.marking.base.permission.PermissionPath;
 import com.initflow.marking.base.service.CrudService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
@@ -30,7 +32,9 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 //        this.permission = new DefaultCRUDPermissionImpl();
     }
 
-    @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getReadPerm(#id, #request, #header)")
+    @PermissionPath("#this.object.getReadPermissionPath()")
+    @CheckDataPermission("#this.object.getReadListPerm(#ids, #request, #header)")
+//    @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getReadPerm(#id, #request, #header)")
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Получение списка сущностей/Get documents", notes = "Получение списка сущностей/Get documents")
     public @ResponseBody
@@ -40,7 +44,9 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 //        return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getSearchPerm(#searchRequest, #request, #header)")
+    @PermissionPath("#this.object.getReadPermissionPath()")
+    @CheckDataPermission("#this.object.getSearchPerm(#searchRequest, #request, #header)")
+//    @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getSearchPerm(#searchRequest, #request, #header)")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ApiOperation(value = "Поиск сущности/Find documents", notes = "Поиск сущности/Find documents")
     public @ResponseBody
@@ -51,7 +57,9 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 //        return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getReadPerm(#id, #request, #header)")
+    @PermissionPath("#this.object.getReadPermissionPath()")
+    @CheckDataPermission("#this.object.getReadPerm(#id, #request, #header)")
+//    @PreAuthorize("hasAnyAuthority(#root.this.getReadRoles()) and #root.this.getReadPerm(#id, #request, #header)")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Получить сущность по id/Read document", notes = "Получить сущность по id/Read document")
     public @ResponseBody
@@ -61,7 +69,9 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
         return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasAnyAuthority(#root.this.updateRoles) and #root.this.getUpdatePerm(#id, #dto, #request, #header)")
+    @PermissionPath("#this.object.getUpdatePermissionPath()")
+    @CheckDataPermission("#this.object.getUpdatePerm(#id, #dto, #request, #header)")
+//    @PreAuthorize("hasAnyAuthority(#root.this.updateRoles) and #root.this.getUpdatePerm(#id, #dto, #request, #header)")
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     @ApiOperation(value = "Обновление сущности/Update document", notes = "Обновление сущности/Update document")
     public @ResponseBody
@@ -73,7 +83,9 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
         return ResponseEntity.ok(respDTO);
     }
 
-    @PreAuthorize("hasAnyAuthority(#root.this.createRoles) and #root.this.getCreatePerm(#dto, #request, #header)")
+    @PermissionPath("#this.object.getCreatePermissionPath()")
+    @CheckDataPermission("#this.object.getCreatePerm(#dto, #request, #header)")
+//    @PreAuthorize("hasAnyAuthority(#root.this.createRoles) and #root.this.getCreatePerm(#dto, #request, #header)")
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation(value = "Создание сущости/Create document", notes = "Создание сущости/Create document")
     public @ResponseBody
@@ -97,11 +109,17 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
         return (C_DTO dto) -> mapper.createMapping(dto);
     }
 
-    public abstract String[] getReadRoles();
+//    public abstract String[] getReadRoles();
+//
+//    public abstract String[] getUpdateRoles();
+//
+//    public abstract String[] getCreateRoles();
 
-    public abstract String[] getUpdateRoles();
+    public abstract String getReadPermissionPath();
 
-    public abstract String[] getCreateRoles();
+    public abstract String getUpdatePermissionPath();
+
+    public abstract String getCreatePermissionPath();
 
     public boolean getReadPerm(ID id, HttpServletRequest request, Map<String, String> header){
         return true;
@@ -116,6 +134,10 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
     }
 
     public boolean getCreatePerm(C_DTO dto, HttpServletRequest request, Map<String, String> header){
+        return true;
+    }
+
+    public boolean getReadListPerm(List<ID> ids, HttpServletRequest request, Map<String, String> header){
         return true;
     }
 
