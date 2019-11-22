@@ -2,24 +2,16 @@ package com.initflow.marking.base.models;
 
 import java.util.Set;
 
-public class SearchRequest {
+public class SearchRequest<T> {
 
-    private Set<Long> ids;
-//    private String user_name;
+    private Set<T> ids;
 
-    public Set<Long> getIds() {
+    public Set<T> getIds() {
         return ids;
     }
 
-    public void setIds(Set<Long> ids) {
+    public void setIds(Set<T> ids) {
         this.ids = ids;
     }
 
-//    public String getUser_name() {
-//        return user_name;
-//    }
-//
-//    public void setUser_name(String user_name) {
-//        this.user_name = user_name;
-//    }
 }
