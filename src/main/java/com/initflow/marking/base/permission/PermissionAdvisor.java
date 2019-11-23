@@ -44,7 +44,7 @@ public class PermissionAdvisor {
             var contains = new ArrayList<Boolean>();
             for(String methodPath : methodPermissionPath.value()) {
 
-                var a = getValue(joinPoint, methodPath);
+                methodPath = getValue(joinPoint, methodPath);
 //                var methodPathClear = methodPath.replaceAll(":","");
                 boolean contain = false;
                 for(String userPath : paths){
