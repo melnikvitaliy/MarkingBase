@@ -3,10 +3,10 @@
   <groupId>com.initflow.marking</groupId>
   <artifactId>base</artifactId>
   <versioning>
-    <release>1.2-SNAPSHOT-10</release>
+    <release>1.2-SNAPSHOT-11</release>
     <versions>
-      <version>1.2-SNAPSHOT-10</version>
+      <version>1.2-SNAPSHOT-11</version>
     </versions>
-    <lastUpdated>20191128224858</lastUpdated>
+    <lastUpdated>20191128232141</lastUpdated>
   </versioning>
 </metadata>
