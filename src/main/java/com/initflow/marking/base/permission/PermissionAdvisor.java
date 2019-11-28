@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Aspect
-@Component
-@Order(25)
+//@Component
+//@Order(25)
 public class PermissionAdvisor {
 
     private ExpressionEvaluator<String> evaluator = new ExpressionEvaluator<>();

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 @Aspect
-@Component
-@Order(50)
+//@Component
+//@Order(50)
 public class CheckDataPermissionAdvisor {
 
     private ExpressionEvaluator<Boolean> evaluator = new ExpressionEvaluator<>();
