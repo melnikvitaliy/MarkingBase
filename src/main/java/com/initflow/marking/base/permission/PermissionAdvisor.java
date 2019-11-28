@@ -59,14 +59,19 @@ public class PermissionAdvisor {
                 contains.add(contain);
             }
 
-            if(methodPermissionPath.logical() == PermissionLogical.OR) {
-                isTruPermission =  contains.stream().anyMatch(it -> it);
-            } else if(methodPermissionPath.logical() == PermissionLogical.AND) {
-                isTruPermission =  contains.stream().allMatch(it -> it);
-            }
+            isTruPermission = checkContains(methodPermissionPath.logical(), contains);
         }
 
         if(!isTruPermission) throw new ForbiddenMetricsBaseRuntimeException("Forbidden. No right permissions.");
+    }
+
+    private boolean checkContains(PermissionLogical permissionLogical, ArrayList<Boolean> contains){
+        if(permissionLogical == PermissionLogical.OR) {
+            return contains.stream().anyMatch(it -> it);
+        } else if(permissionLogical == PermissionLogical.AND) {
+            return contains.stream().allMatch(it -> it);
+        }
+        return false;
     }
 
     private String getValue(JoinPoint joinPoint, String condition) {
