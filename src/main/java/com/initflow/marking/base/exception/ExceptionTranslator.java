@@ -1,9 +1,6 @@
 package com.initflow.marking.base.exception;
 
-import com.initflow.marking.base.exception.model.ForbiddenMetricsBaseRuntimeException;
-import com.initflow.marking.base.exception.model.NotAllowedMetricsBaseRuntimeException;
-import com.initflow.marking.base.exception.model.NotFoundMetricsBaseException;
-import com.initflow.marking.base.exception.model.UnprocessableMetricsBaseRuntimeException;
+import com.initflow.marking.base.exception.model.*;
 import com.initflow.marking.base.mapper.error.ErrorVM;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -21,32 +18,40 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ExceptionTranslator {
 
+
+    @ExceptionHandler(MetricsBaseRuntimeException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorVM processMethodNotSupportedException(MetricsBaseRuntimeException exception) {
+        return new ErrorVM(HttpStatus.BAD_REQUEST.toString() + "; " + exception.getMessage(), null, ExceptionUtils.getStackTrace(exception));
+    }
+
     @ExceptionHandler(ForbiddenMetricsBaseRuntimeException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorVM processMethodNotSupportedException(ForbiddenMetricsBaseRuntimeException exception) {
-        return new ErrorVM(HttpStatus.FORBIDDEN.toString(), null, ExceptionUtils.getStackTrace(exception));
+        return new ErrorVM(HttpStatus.FORBIDDEN.toString() + "; " + exception.getMessage(), null, ExceptionUtils.getStackTrace(exception));
     }
 
     @ExceptionHandler(UnprocessableMetricsBaseRuntimeException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorVM processMethodNotSupportedException(UnprocessableMetricsBaseRuntimeException exception) {
-        return new ErrorVM(HttpStatus.UNPROCESSABLE_ENTITY.toString(), null, ExceptionUtils.getStackTrace(exception));
+        return new ErrorVM(HttpStatus.UNPROCESSABLE_ENTITY.toString() + "; " + exception.getMessage(), null, ExceptionUtils.getStackTrace(exception));
     }
 
     @ExceptionHandler(NotFoundMetricsBaseException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorVM processMethodNotSupportedException(NotFoundMetricsBaseException exception) {
-        return new ErrorVM(HttpStatus.NOT_FOUND.toString(), null, ExceptionUtils.getStackTrace(exception));
+        return new ErrorVM(HttpStatus.NOT_FOUND.toString() + "; " + exception.getMessage(), null, ExceptionUtils.getStackTrace(exception));
     }
 
     @ExceptionHandler(NotAllowedMetricsBaseRuntimeException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ErrorVM processMethodNotSupportedException(NotAllowedMetricsBaseRuntimeException exception) {
-        return new ErrorVM(HttpStatus.METHOD_NOT_ALLOWED.toString(), null, ExceptionUtils.getStackTrace(exception));
+        return new ErrorVM(HttpStatus.METHOD_NOT_ALLOWED.toString() + "; " + exception.getMessage(), null, ExceptionUtils.getStackTrace(exception));
     }
 
     @ExceptionHandler(Exception.class)
