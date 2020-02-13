@@ -19,6 +19,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ExceptionTranslator {
 
+
+    @ExceptionHandler(HttpMessageNotReadableBaseException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorVM processMethodNotSupportedException(HttpMessageNotReadableBaseException exception) {
+        return new ErrorVM(HttpStatus.BAD_REQUEST.toString() + "; " + exception.getMessage(), null, ExceptionUtils.getStackTrace(exception));
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)

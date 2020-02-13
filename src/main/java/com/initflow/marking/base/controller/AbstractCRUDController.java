@@ -1,5 +1,7 @@
 package com.initflow.marking.base.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.initflow.marking.base.exception.model.HttpMessageNotReadableBaseException;
 import com.initflow.marking.base.mapper.domain.CrudMapper;
 import com.initflow.marking.base.models.SearchRequest;
 import com.initflow.marking.base.models.domain.IDObj;
@@ -7,13 +9,19 @@ import com.initflow.marking.base.permission.CheckDataPermission;
 import com.initflow.marking.base.permission.PermissionPath;
 import com.initflow.marking.base.service.CrudService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpInputMessage;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +32,10 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
 
     private CrudService<T, ID> crudService;
     private CrudMapper<T, C_DTO, U_DTO, R_DTO> mapper;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
 //    private CRUDPermission permission;
 
     public AbstractCRUDController(CrudService<T, ID> crudService, CrudMapper<T, C_DTO, U_DTO, R_DTO> mapper){
@@ -82,6 +94,41 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
         postCreateFunc(obj);
         return ResponseEntity.ok(respDTO);
     }
+
+//    @PermissionPath({"#this.object.getUpdatePermissionPath()"})
+//    @CheckDataPermission("#this.object.getUpdatePerm(#id, #dto, #request, #header)")
+//    @RequestMapping(
+//            value = {"/{id}"},
+//            method = {RequestMethod.PATCH}
+//    )
+//    @ApiOperation(
+//            value = "Обновление сущности/Update document",
+//            notes = "Обновление сущности/Update document"
+//    )
+//    @ResponseBody
+//    public ResponseEntity<R_DTO> patchUpdate(@PathVariable ID id, NativeWebRequest webRequest) {
+//        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
+//        var req =  new ServletServerHttpRequest(servletRequest);
+//
+//        T obj = crudService.findOne(id).orElse(null);
+//        if(obj == null)
+//            return ResponseEntity.ok(null);
+//        T updatedObj  = readJavaType(obj, req);
+//        updatedObj.setId(obj.getId());
+//        updatedObj = crudService.save(updatedObj);
+//        R_DTO respDTO = getReadMapper().apply(updatedObj);
+//        postCreateFunc(obj);
+//        return ResponseEntity.ok(respDTO);
+//    }
+//
+//    private T readJavaType(Object object, HttpInputMessage inputMessage) {
+//        try {
+//            return this.objectMapper.readerForUpdating(object).readValue(inputMessage.getBody());
+//        }
+//        catch (IOException ex) {
+//            throw new HttpMessageNotReadableBaseException("Could not read document: " + ex.getMessage(), ex);
+//        }
+//    }
 
     @PermissionPath("#this.object.getCreatePermissionPath()")
     @CheckDataPermission("#this.object.getCreatePerm(#dto, #request, #header)")
