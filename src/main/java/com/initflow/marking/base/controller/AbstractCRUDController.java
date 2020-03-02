@@ -84,7 +84,7 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
     @PermissionPath("#this.object.getUpdatePermissionPath()")
     @CheckDataPermission("#this.object.getUpdatePerm(#id, #dto, #request, #header)")
 //    @PreAuthorize("hasAnyAuthority(#root.this.updateRoles) and #root.this.getUpdatePerm(#id, #dto, #request, #header)")
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     @ApiOperation(value = "Обновление сущности/Update document", notes = "Обновление сущности/Update document")
     public @ResponseBody
     ResponseEntity<R_DTO> update(@PathVariable ID id, @RequestBody U_DTO dto,
@@ -95,34 +95,34 @@ public abstract class AbstractCRUDController<T extends IDObj<ID>, C_DTO, U_DTO, 
         return ResponseEntity.ok(respDTO);
     }
 
-    @PermissionPath({"#this.object.getUpdatePermissionPath()"})
-    @CheckDataPermission("#this.object.getPatchPerm(#id, #webRequest)")
-    @RequestMapping(value = {"/{id}"}, method = {RequestMethod.PATCH})
-    @ApiOperation(value = "Обновление сущности/Update document", notes = "Обновление сущности/Update document")
-    @ResponseBody
-    public ResponseEntity<R_DTO> patchUpdate(@PathVariable ID id, NativeWebRequest webRequest) {
-        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        var req =  new ServletServerHttpRequest(servletRequest);
-
-        T obj = crudService.findOne(id).orElse(null);
-        if(obj == null)
-            return ResponseEntity.ok(null);
-        T updatedObj  = readJavaType(obj, req);
-        updatedObj.setId(obj.getId());
-        updatedObj = crudService.save(updatedObj);
-        R_DTO respDTO = getReadMapper().apply(updatedObj);
-        postCreateFunc(obj);
-        return ResponseEntity.ok(respDTO);
-    }
-
-    private T readJavaType(Object object, HttpInputMessage inputMessage) {
-        try {
-            return this.objectMapper.readerForUpdating(object).readValue(inputMessage.getBody());
-        }
-        catch (IOException ex) {
-            throw new HttpMessageNotReadableBaseException("Could not read document: " + ex.getMessage(), ex);
-        }
-    }
+//    @PermissionPath({"#this.object.getUpdatePermissionPath()"})
+//    @CheckDataPermission("#this.object.getPatchPerm(#id, #webRequest)")
+//    @RequestMapping(value = {"/{id}"}, method = {RequestMethod.PATCH})
+//    @ApiOperation(value = "Обновление сущности/Update document", notes = "Обновление сущности/Update document")
+//    @ResponseBody
+//    public ResponseEntity<R_DTO> patchUpdate(@PathVariable ID id, NativeWebRequest webRequest) {
+//        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
+//        var req =  new ServletServerHttpRequest(servletRequest);
+//
+//        T obj = crudService.findOne(id).orElse(null);
+//        if(obj == null)
+//            return ResponseEntity.ok(null);
+//        T updatedObj  = readJavaType(obj, req);
+//        updatedObj.setId(obj.getId());
+//        updatedObj = crudService.save(updatedObj);
+//        R_DTO respDTO = getReadMapper().apply(updatedObj);
+//        postCreateFunc(obj);
+//        return ResponseEntity.ok(respDTO);
+//    }
+//
+//    private T readJavaType(Object object, HttpInputMessage inputMessage) {
+//        try {
+//            return this.objectMapper.readerForUpdating(object).readValue(inputMessage.getBody());
+//        }
+//        catch (IOException ex) {
+//            throw new HttpMessageNotReadableBaseException("Could not read document: " + ex.getMessage(), ex);
+//        }
+//    }
 
     @PermissionPath("#this.object.getCreatePermissionPath()")
     @CheckDataPermission("#this.object.getCreatePerm(#dto, #request, #header)")
