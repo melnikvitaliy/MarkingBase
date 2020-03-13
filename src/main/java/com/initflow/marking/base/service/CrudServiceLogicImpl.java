@@ -47,12 +47,12 @@ public abstract class CrudServiceLogicImpl<T extends IDObj<ID>, ID extends Seria
     }
 
     @Override
-    public <SR extends SearchRequest, K> Page<K> searchAndMap(Pageable pageable, SR searchRequest, Function<T, K> mapper) {
+    public <SR extends SearchRequest<ID>, K> Page<K> searchAndMap(Pageable pageable, SR searchRequest, Function<T, K> mapper) {
         return crudServiceImpl.searchAndMap(pageable, searchRequest, mapper);
     }
 
     @Override
-    public <SR extends SearchRequest> Page<T> findAll(Pageable pageable, SR searchRequest) {
+    public <SR extends SearchRequest<ID>> Page<T> findAll(Pageable pageable, SR searchRequest) {
         return crudServiceImpl.findAll(pageable, searchRequest);
     }
 

@@ -50,7 +50,7 @@ public abstract class CrudServiceImpl<T extends IDObj<ID>, ID extends Serializab
 
     public abstract Page<T> findByids(List<ID> ids, Pageable pageable);
 
-    public <SR extends SearchRequest, K> Page<K> searchAndMap(Pageable pageable, SR searchRequest, Function<T,K> mapper){
+    public <SR extends SearchRequest<ID>, K> Page<K> searchAndMap(Pageable pageable, SR searchRequest, Function<T,K> mapper){
         Page<T> page = findAll(pageable, searchRequest);
         return mapping(page, pageable, mapper);
     }
@@ -61,5 +61,5 @@ public abstract class CrudServiceImpl<T extends IDObj<ID>, ID extends Serializab
         return new PageImpl<>(result, pageable, page.getTotalElements());
     }
 
-    public abstract <SR extends SearchRequest> Page<T> findAll(Pageable pageable, SR searchRequest);
+    public abstract <SR extends SearchRequest<ID>> Page<T> findAll(Pageable pageable, SR searchRequest);
 }

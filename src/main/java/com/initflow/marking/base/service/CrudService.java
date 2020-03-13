@@ -17,6 +17,6 @@ public interface CrudService<T extends IDObj<ID>, ID extends Serializable>  exte
     <K> K read(ID id, Function<T, K> mapper);
     <K> Page<K> readList(List<ID> ids, Pageable pageable, Function<T, K> mapper);
     Page<T> findByids(List<ID> ids, Pageable pageable);
-    <SR extends SearchRequest, K> Page<K> searchAndMap(Pageable pageable, SR searchRequest, Function<T, K> mapper);
-    <SR extends SearchRequest> Page<T> findAll(Pageable pageable, SR searchRequest);
+    <SR extends SearchRequest<ID>, K> Page<K> searchAndMap(Pageable pageable, SR searchRequest, Function<T, K> mapper);
+    <SR extends SearchRequest<ID>> Page<T> findAll(Pageable pageable, SR searchRequest);
 }
