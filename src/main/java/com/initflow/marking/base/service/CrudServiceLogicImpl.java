@@ -3,6 +3,7 @@ package com.initflow.marking.base.service;
 import com.initflow.marking.base.models.SearchRequest;
 import com.initflow.marking.base.models.domain.IDObj;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -110,4 +111,9 @@ public abstract class CrudServiceLogicImpl<T extends IDObj<ID>, ID extends Seria
     public Iterable<T> saveAll(Iterable<T> objects) {
         return crudServiceImpl.saveAll(objects);
     }
+
+    public <SR extends SearchRequest<ID>> T findFirst(SR sr) {
+        return crudServiceImpl.findFirst(sr);
+    }
+
 }

@@ -4,6 +4,7 @@ import com.initflow.marking.base.models.SearchRequest;
 import com.initflow.marking.base.models.domain.IDObj;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
@@ -62,4 +63,11 @@ public abstract class CrudServiceImpl<T extends IDObj<ID>, ID extends Serializab
     }
 
     public abstract <SR extends SearchRequest<ID>> Page<T> findAll(Pageable pageable, SR searchRequest);
+
+    public <SR extends SearchRequest<ID>> T findFirst(SR sr) {
+        PageRequest pageRequest = PageRequest.of(0, 1);
+        Page<T> result = findAll(pageRequest, sr);
+
+        return result.getContent().size() != 0 ? result.getContent().get(0) : null;
+    }
 }
