@@ -127,7 +127,7 @@ public class ListObjectWithTwoValuesSQLResponceParser {
 
     public static <K,V> Map<K, V> parseMapKKeyForFirstValueWithNullValues(List<Object[]> objects, Class<K> keyClass, Class<V> valueClass){
         Map<K, V> result = new HashMap<>();
-        return parseMapKKeyForFirstValue(objects, keyClass, valueClass, result);
+        return parseMapKKeyForFirstValueWithNullValues(objects, keyClass, valueClass, result);
     }
 
     public static <K,V> Map<K, V> parseMapKKeyForFirstValueWithNullValues(List<Object[]> objects, Class<K> keyClass, Class<V> valueClass, Map<K,V> result){
