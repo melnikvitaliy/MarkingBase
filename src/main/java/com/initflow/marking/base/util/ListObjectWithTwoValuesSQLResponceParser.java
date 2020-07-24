@@ -105,6 +105,8 @@ public class ListObjectWithTwoValuesSQLResponceParser {
         return parseMapKKeyForFirstValue(objects, keyClass, valueClass, result);
     }
 
+
+
     public static <K,V> Map<K, V> parseMapKKeyForFirstValue(List<Object[]> objects, Class<K> keyClass, Class<V> valueClass, Map<K,V> result){
         try{
             for(Object[] obj : objects){
@@ -115,6 +117,30 @@ public class ListObjectWithTwoValuesSQLResponceParser {
                 }
                 K key = keyClass.cast(obj[0]);
                 V value = valueClass.cast(obj[1]);
+                result.putIfAbsent(key, value);
+            }
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    public static <K,V> Map<K, V> parseMapKKeyForFirstValueWithNullValues(List<Object[]> objects, Class<K> keyClass, Class<V> valueClass){
+        Map<K, V> result = new HashMap<>();
+        return parseMapKKeyForFirstValue(objects, keyClass, valueClass, result);
+    }
+
+    public static <K,V> Map<K, V> parseMapKKeyForFirstValueWithNullValues(List<Object[]> objects, Class<K> keyClass, Class<V> valueClass, Map<K,V> result){
+        try{
+            for(Object[] obj : objects){
+                if(obj.length < 2
+                        || (obj[0] != null && !(obj[0].getClass().isAssignableFrom(keyClass)))
+                        || (obj[1] != null && !(obj[1].getClass().isAssignableFrom(valueClass)))){
+                    throw new RuntimeException("No right return data on get users count by event;");
+                }
+
+                K key = obj[0] == null ? null : keyClass.cast(obj[0]);
+                V value = obj[1] == null ? null : valueClass.cast(obj[1]);
                 result.putIfAbsent(key, value);
             }
         } catch (Exception e){
