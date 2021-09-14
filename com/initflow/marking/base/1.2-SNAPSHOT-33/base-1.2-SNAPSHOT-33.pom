@@ -15,7 +15,7 @@
 
     <groupId>com.initflow.marking</groupId>
     <artifactId>base</artifactId>
-    <version>1.2-SNAPSHOT-32</version>
+    <version>1.2-SNAPSHOT-33</version>
 
     <packaging>jar</packaging>
 
