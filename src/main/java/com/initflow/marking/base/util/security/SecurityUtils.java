@@ -1,10 +1,19 @@
 package com.initflow.marking.base.util.security;
 
 import com.initflow.marking.base.constants.AuthRoles;
+import org.keycloak.KeycloakPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for Spring Security.
@@ -29,6 +38,8 @@ public final class SecurityUtils {
                 userName = springSecurityUser.getUsername();
             } else if (authentication.getPrincipal() instanceof String) {
                 userName = (String) authentication.getPrincipal();
+            } else if (authentication.getPrincipal() instanceof KeycloakPrincipal){
+                userName = ((KeycloakPrincipal) authentication.getPrincipal()).getName();
             }
         }
         return userName;
@@ -65,5 +76,43 @@ public final class SecurityUtils {
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority));
         }
         return false;
+    }
+
+    public static HttpServletRequest getHttpServletRequest(){
+        var requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        return requestAttributes != null ? requestAttributes.getRequest() : null;
+    }
+
+    public static String httpServletRequestToString(HttpServletRequest request) {
+        StringBuilder sb = new StringBuilder();
+        if(request != null) {
+
+            sb.append("Request Method = [").append(request.getMethod()).append("], ");
+            sb.append("Request URL Path = [").append(request.getRequestURL()).append("], ");
+
+//            String headers =
+//                    Collections.list((Enumeration<String>) request.getHeaderNames()).stream()
+//                            .map(headerName -> headerName + " : " + Collections.list(request.getHeaders(headerName)))
+//                            .collect(Collectors.joining(", "));
+//
+//            if (headers.isEmpty()) {
+//                sb.append("Request headers: NONE,");
+//            } else {
+//                sb.append("Request headers: [").append(headers).append("],");
+//            }
+
+            String parameters =
+                    Collections.list(request.getParameterNames()).stream()
+                            .map(p -> p + " : " + Arrays.asList(request.getParameterValues(p)))
+                            .collect(Collectors.joining(", "));
+
+            if (parameters.isEmpty()) {
+                sb.append("Request parameters: NONE.");
+            } else {
+                sb.append("Request parameters: [").append(parameters).append("].");
+            }
+        }
+
+        return sb.toString();
     }
 }

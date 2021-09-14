@@ -1,6 +1,7 @@
 package com.initflow.marking.base.permission;
 
 import com.initflow.marking.base.exception.model.ForbiddenMetricsBaseRuntimeException;
+import com.initflow.marking.base.logger.LokiLoggerService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -32,6 +33,8 @@ public class PermissionAdvisor {
 
         boolean isTruPermission = false;
         if(securityContext.getAuthentication() != null && securityContext.getAuthentication().getAuthorities() != null) {
+            LokiLoggerService.authUserQueryLogMessage();
+
             Collection<? extends GrantedAuthority> grantedAuthorities = securityContext.getAuthentication().getAuthorities();
             Set<String> paths = new HashSet<>();
             for(var auth : grantedAuthorities) {
