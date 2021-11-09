@@ -49,7 +49,7 @@ public abstract class AbstractCRUDControllerNoCount<T extends IDObj<Long>, C_DTO
             "Method of obtaining data with multiple query KM")
     @RequestMapping(value = "/pageable", method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity<PageableResponse> printWithoutPdf(Pageable pageable, SR searchRequest) {
+    ResponseEntity<PageableResponse> count(Pageable pageable, SR searchRequest) {
         long totalElements = crudService.count(searchRequest);
         Integer totalPages = pageable.getPageSize() == 0 ? 1 : (int)Math.ceil((double)totalElements / (double)pageable.getPageSize());
         return ResponseEntity.ok(new PageableResponse(totalPages, totalElements));

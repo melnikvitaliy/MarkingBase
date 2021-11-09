@@ -13,15 +13,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public abstract class CrudServiceImplWithoutCount<T extends IDObj<ID>, ID extends Serializable> extends CrudServiceImpl<T, ID>
-        implements ICrudServiceImplWithoutCount<T, ID> {
+public abstract class CrudServiceImplWithoutCount<T extends IDObj<Long>> extends CrudServiceImpl<T, Long>
+        implements ICrudServiceImplWithoutCount<T, Long> {
 
-    protected abstract QueryableReadRepository<T, ID> getRepositoryNoCount();
+    protected abstract QueryableReadRepository<T, Long> getRepositoryNoCount();
 
     protected abstract <SR extends SearchRequest<Long>> BooleanBuilder getPredicate(SR searchRequest);
 
@@ -73,5 +72,10 @@ public abstract class CrudServiceImplWithoutCount<T extends IDObj<ID>, ID extend
     @Override
     public <SR extends SearchRequest<Long>> Page<T> findAllWithoutCount(Pageable pageable, SR searchRequest) {
         return null;
+    }
+
+    @Override
+    public <SR extends SearchRequest<Long>> long count(SR searchRequest) {
+        return getRepositoryNoCount().count(getPredicate(searchRequest));
     }
 }

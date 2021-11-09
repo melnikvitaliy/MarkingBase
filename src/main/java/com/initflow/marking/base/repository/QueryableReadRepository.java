@@ -13,5 +13,6 @@ public interface QueryableReadRepository<T, ID> extends Repository<T, ID> {
 
     Page<T> findAllWithoutCount(BooleanBuilder predicate, Pageable pageable);
     Page<T> findAll(Predicate predicate, Pageable pageable);
+    long count(Predicate predicate);
 
 }
