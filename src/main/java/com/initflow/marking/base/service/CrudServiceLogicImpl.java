@@ -116,4 +116,8 @@ public abstract class CrudServiceLogicImpl<T extends IDObj<ID>, ID extends Seria
         return crudServiceImpl.findFirst(sr);
     }
 
+    @Override
+    public <SR extends SearchRequest<ID>> long count(SR searchRequest) {
+        return crudServiceImpl.count(searchRequest);
+    }
 }

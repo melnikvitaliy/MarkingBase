@@ -70,4 +70,6 @@ public abstract class CrudServiceImpl<T extends IDObj<ID>, ID extends Serializab
 
         return result.getContent().size() != 0 ? result.getContent().get(0) : null;
     }
+
+    public abstract <SR extends SearchRequest<ID>> long count(SR searchRequest);
 }
